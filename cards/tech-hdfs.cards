@@ -2,5 +2,52 @@ What is HDFS?
 ---
 Hadoop Distributed File System (HDFS) is a distributed file system based on GFS (Google File System).
 
+Base of many other technologies (MapReduce, Spark, HBase)
 
+Designed to write once, read many times
 ===
+
+What are the main design blocks of HDFS?
+---
+Name Node stores metadata such as replicas, chunk locations, file system directory
+Data Node hold actual data split into chunks of 64mb or 128mb chunk size
+Chunking to increase read and write performance through paralellism
+availability through replication
+===
+
+How does a Name Node work?
+---
+stores all metadata of all files
+stores metadata on all chunks including versions
+all data is kept in memory
+edit log (like a WAL) allows for fast writes and is snapshotted regularly to FsImage
+on start use FsImage and EditLog to restore metadata state
+on startup NameNode gets BlockReport from all DataNodes and fixes missing replicas
+===
+
+How does Replication work in HDFS?
+---
+replication is rack aware (can be used to ensure durability across DC)
+uses replication pipelining to replicate (chain of replicas pushing changes)
+synchronous replication: writes are only successful if replicated to all replicas in chain, clients responsibiliyt
+===
+
+How do reads work in HDFS?
+---
+client queries NameNode to get chunk location
+client performs latency test to determine closes data nodes
+client reads nodes
+===
+
+How do writes work in HDFS?
+---
+client contacts name node and gets replicas and primary replica
+if not primary replica assigned (using a lease) choose a primary with latest version of chunk
+after that write to primary and chained through secondary
+ack is sent after data has been acked by all replicas
+===
+
+
+
+
+
