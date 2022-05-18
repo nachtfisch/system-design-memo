@@ -1,0 +1,53 @@
+What are the main types of database indices?
+---
+hash index
+lsm tree + ss table
+b tree
+===
+
+What are pros and cons of hash indices?
+---
+pro: easy to implement, very fast
+con: all keys must fit in memory, bad for range queries
+=== 
+
+Index based on LSM trees + SS Table: How do writes work?
+---
+write first goes to in mem table (balanced bin tree) and once full sorted to file
+write ahead log to to increase durability
+compaction
+===
+
+Index based on LSM trees + SS Table: how do reads works?
+---
+lookup in mem table, then from newest to oldest ss table (this might be slow, e.g. in case key is not there all tables are looped)
+optimization for non existent keys: bloom filters
+optimization for faster lookup: sparse table and binary search
+===
+
+lsm tree + ss table pros and cons
+---
+pro: high write throughput (in memory buffer and append only), good for range queries
+cons: reads might be slow for old and non existant keys, compaction might take lot of background resources
+===
+
+b trees: how does tree structure work
+---
+ranges and references/pointers to lower segment
+a, ref, K, ref, Z
+a ref c   d ref k
+read and updates are tree traversal
+writes might need to create new page depending on page size
+durable through WAL
+===
+
+b trees: pros and cons
+---
+pros: relativly fast reads (3 to 4 levels dep), good for range queries
+cons: relatively slow writes
+===
+
+What's a WAL?
+---
+write ahead log. Used for durability and crash recovery for database indices based on b-tree and lsm/ss table.
+===
