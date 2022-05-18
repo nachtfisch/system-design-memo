@@ -1,0 +1,27 @@
+Cassandra: Pros and Cons
+---
+pro: incredible write throughput
+===
+
+Cassandra: Indexing and storage
+---
+based on LSM Tree + SS Tables
+bloom filters
+===
+
+Cassandra: Partitioning and Clustering
+---
+===
+
+Cassandra: Consistency
+---
+===
+
+Cassandra: Fault Tolerance
+---
+===
+
+Cassandra: Gossip Protocol
+---
+===
+
